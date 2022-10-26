@@ -30,4 +30,9 @@ export default {
     XXL: 32,
   },
   LINE_HEIGHT: '130%',
+  BORDER_RADIUS: {
+    SM: 6,
+    MD: 8,
+    LG: 20,
+  },
 }
