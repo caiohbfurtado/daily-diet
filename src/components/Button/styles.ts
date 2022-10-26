@@ -42,6 +42,4 @@ export const ButtonTitle = styled.Text<Pick<StyledButtonProps, 'type'>>`
     font-family: ${theme.FONT_FAMILY.BOLD};
     font-size: ${theme.FONT_SIZE.SM}px;
   `};
-
-  text-transform: capitalize;
 `

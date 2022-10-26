@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { View } from 'react-native'
-import { useTheme } from 'styled-components/native'
-import { ArrowLeft } from 'phosphor-react-native'
 import { useNavigation } from '@react-navigation/native'
 
 import { Input } from '@components/Input'
@@ -9,28 +7,24 @@ import { Input } from '@components/Input'
 import * as S from './styles'
 import { Select } from '@components/Select'
 import { Button } from '@components/Button'
+import { Label } from '@components/Label'
+import { Header } from '../../components/Header'
 
 export function NewMeal() {
-  const theme = useTheme()
   const navigation = useNavigation()
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [day, setDay] = useState('')
   const [hour, setHour] = useState('')
-  const [inside, setInside] = useState('')
+  const [status, setStatus] = useState('')
 
-  function handleGoHome() {
-    navigation.navigate('Home')
+  function handleAddNewMeal() {
+    navigation.navigate('Feedback', { status: 'failure' })
   }
 
   return (
     <S.Container>
-      <S.Header>
-        <S.BackButton onPress={handleGoHome}>
-          <ArrowLeft size={24} color={theme.COLORS.GRAY_2} />
-        </S.BackButton>
-        <S.Title>Nova refeição</S.Title>
-      </S.Header>
+      <Header title="Nova refeição" />
 
       <S.Content>
         <S.Form>
@@ -51,22 +45,22 @@ export function NewMeal() {
             </View>
           </View>
 
-          <S.Label>Está dentro da dieta?</S.Label>
+          <Label title="Está dentro da dieta?" />
           <View style={{ flexDirection: 'row' }}>
             <Select
               title="Sim"
-              selected={inside === 'yes'}
-              onPress={() => setInside('yes')}
+              selected={status === 'success'}
+              onPress={() => setStatus('success')}
               mr
             />
             <Select
               title="Não"
-              selected={inside === 'no'}
-              onPress={() => setInside('no')}
+              selected={status === 'failure'}
+              onPress={() => setStatus('failure')}
             />
           </View>
         </S.Form>
-        <Button title="Cadastrar refeição" />
+        <Button title="Cadastrar refeição" onPress={handleAddNewMeal} />
       </S.Content>
     </S.Container>
   )

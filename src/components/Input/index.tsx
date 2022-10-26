@@ -1,5 +1,8 @@
 import { useMemo, useRef, useState } from 'react'
 import { TextInput, TextInputProps } from 'react-native'
+
+import { Label } from '@components/Label'
+
 import * as S from './styles'
 
 type Props = TextInputProps & {
@@ -35,7 +38,7 @@ export function Input({
 
   return (
     <S.Container>
-      <S.Label>{label}</S.Label>
+      <Label title={label} />
       <S.Input
         ref={inputRef}
         value={value}

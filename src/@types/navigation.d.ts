@@ -4,6 +4,11 @@ export declare global {
     interface RootParamList {
       Home: undefined
       NewMeal: undefined
+      Meal: undefined
+      MealsSummary: undefined
+      Feedback: {
+        status: 'success' | 'failure'
+      }
     }
   }
 }

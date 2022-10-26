@@ -3,10 +3,8 @@ import styled, { css } from 'styled-components/native'
 type StyledContainerProps = {
   mr: boolean
   selected: boolean
-  isPositive: boolean
+  status: 'success' | 'failure'
 }
-
-type StyledCircleProps = Pick<StyledContainerProps, 'isPositive'>
 
 export const Container = styled.TouchableOpacity<StyledContainerProps>`
   flex: 1;
@@ -27,27 +25,18 @@ export const Container = styled.TouchableOpacity<StyledContainerProps>`
       margin-right: 8px;
     `}
 
-    ${({ theme, selected, isPositive }) =>
+    ${({ theme, selected, status }) =>
     selected &&
     css`
       border-width: 1px;
       border-style: solid;
-      border-color: ${isPositive
+      border-color: ${status === 'success'
         ? theme.COLORS.GREEN_DARK
         : theme.COLORS.RED_DARK};
-      background-color: ${isPositive
+      background-color: ${status === 'success'
         ? theme.COLORS.GREEN_LIGHT
         : theme.COLORS.RED_LIGHT};
     `}
-`
-
-export const Circle = styled.View<StyledCircleProps>`
-  height: 8px;
-  width: 8px;
-  border-radius: 9999px;
-  background-color: ${({ theme, isPositive }) =>
-    isPositive ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK};
-  margin-right: 8px;
 `
 
 export const Title = styled.Text`

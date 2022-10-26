@@ -17,13 +17,21 @@ export function Home() {
     navigation.navigate('NewMeal')
   }
 
+  function handleGoToSummary() {
+    navigation.navigate('MealsSummary')
+  }
+
+  function handleGoToMeal() {
+    navigation.navigate('Meal')
+  }
+
   return (
     <S.Container>
       <S.Header>
         <Image source={logoImg} />
         <Avatar />
       </S.Header>
-      <PercentCard percent={90.86} />
+      <PercentCard percent={90.86} onPress={handleGoToSummary} />
 
       <S.Content>
         <S.Text>Refeições</S.Text>
@@ -38,7 +46,12 @@ export function Home() {
       <FlatList
         data={['Bla', 'Blabla']}
         renderItem={({ item }) => (
-          <MealCard title="X-tudo" hour="20:00" status="out" />
+          <MealCard
+            title="X-tudo"
+            hour="20:00"
+            status="out"
+            onPress={handleGoToMeal}
+          />
         )}
         style={{ marginTop: 32 }}
       />
