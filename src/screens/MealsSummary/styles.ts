@@ -1,20 +1,34 @@
 import styled, { css } from 'styled-components/native'
+import { Platform } from 'react-native'
 
 type StyledContainerProps = {
-  percent: number
+  percent?: number
 }
 
 export const Container = styled.View<StyledContainerProps>`
   flex: 1;
-  background: ${({ theme, percent }) =>
-    percent >= 50 ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
+
+  ${({ theme, percent }) =>
+    percent &&
+    css`
+      background-color: ${percent >= 50
+        ? theme.COLORS.GREEN_LIGHT
+        : theme.COLORS.RED_LIGHT};
+    `}
+
+  ${({ theme, percent }) =>
+    !percent &&
+    css`
+      background-color: ${theme.COLORS.WHITE};
+    `}
 `
 
 export const HeaderTexts = styled.View`
   width: 100%;
   align-items: center;
   justify-content: center;
-  padding-top: 24px;
+  padding-top: ${Platform.OS === 'android' ? 44 : 24}px;
+  padding-bottom: ${Platform.OS === 'android' ? 34 : 0}px;
 `
 export const PercentText = styled.Text`
   margin-bottom: 2px;

@@ -6,7 +6,7 @@ import * as S from './styles'
 type Props = TouchableOpacityProps & {
   title: string
   hour: string
-  status: 'open' | 'out'
+  status: 'success' | 'failure'
 }
 
 export function MealCard({ title, status, hour, ...rest }: Props) {

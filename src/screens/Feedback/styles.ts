@@ -1,5 +1,9 @@
 import styled, { css } from 'styled-components/native'
 
+type StyledTitleProps = {
+  status: 'success' | 'failure'
+}
+
 export const Container = styled.View`
   flex: 1;
   align-items: center;
@@ -10,12 +14,14 @@ export const Container = styled.View`
 export const Image = styled.Image`
   margin-bottom: 32px;
 `
-export const Title = styled.Text`
+export const Title = styled.Text<StyledTitleProps>`
   margin-bottom: 8px;
-  ${({ theme }) => css`
+  ${({ theme, status }) => css`
     font-size: ${theme.FONT_SIZE.XXL}px;
     font-family: ${theme.FONT_FAMILY.BOLD};
-    color: ${theme.COLORS.GREEN_DARK};
+    color: ${status === 'success'
+      ? theme.COLORS.GREEN_DARK
+      : theme.COLORS.RED_DARK};
   `}
 `
 

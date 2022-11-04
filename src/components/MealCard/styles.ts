@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components/native'
 
 type StyledStatusCircle = {
-  status: 'open' | 'out'
+  status: 'success' | 'failure'
 }
 
 export const Container = styled.TouchableOpacity`
@@ -50,5 +50,5 @@ export const StatusCircle = styled.View<StyledStatusCircle>`
   height: 14px;
   border-radius: 999999px;
   background: ${({ theme, status }) =>
-    status === 'open' ? theme.COLORS.GREEN_MID : theme.COLORS.RED_MID};
+    status === 'success' ? theme.COLORS.GREEN_MID : theme.COLORS.RED_MID};
 `

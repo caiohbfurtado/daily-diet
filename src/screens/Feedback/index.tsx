@@ -1,10 +1,11 @@
+import { useNavigation, useRoute } from '@react-navigation/native'
+
 import * as S from './styles'
 
 import { Button } from '@components/Button'
 
 import successFeedbackImg from '@assets/success-feedback.png'
 import failureFeedbackImg from '@assets/failure-feedback.png'
-import { useNavigation, useRoute } from '@react-navigation/native'
 
 const infoBasedInStatus = {
   success: {
@@ -44,7 +45,7 @@ export function Feedback() {
 
   return (
     <S.Container>
-      <S.Title>{title}</S.Title>
+      <S.Title status={status}>{title}</S.Title>
       <Text />
       <S.Image source={sourceImg} />
       <Button title="Ir para a página inicial" onPress={handleGoHome} />

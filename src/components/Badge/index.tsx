@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { StatusCircle } from '../StatusCircle'
+
 import * as S from './styles'
 
 type Props = {

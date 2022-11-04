@@ -1,8 +1,25 @@
 import styled, { css } from 'styled-components/native'
 
-export const Container = styled.View`
+type StyledContainerProps = {
+  status?: 'success' | 'failure'
+}
+
+export const Container = styled.View<StyledContainerProps>`
   flex: 1;
-  background: ${({ theme }) => theme.COLORS.GREEN_LIGHT};
+
+  ${({ theme, status }) =>
+    !status &&
+    css`
+      background: ${theme.COLORS.WHITE};
+    `}
+
+  ${({ theme, status }) =>
+    status &&
+    css`
+      background: ${status === 'success'
+        ? theme.COLORS.GREEN_LIGHT
+        : theme.COLORS.RED_LIGHT};
+    `}
 `
 
 export const Content = styled.View`

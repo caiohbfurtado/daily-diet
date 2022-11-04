@@ -1,33 +1,82 @@
-import { useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Alert, TextInput, View } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-
-import { Input } from '@components/Input'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import * as S from './styles'
+
+import { Input } from '@components/Input'
 import { Select } from '@components/Select'
 import { Button } from '@components/Button'
 import { Label } from '@components/Label'
 import { Header } from '@components/Header'
-import { AppError } from '@utils/AppError'
-import { createNewMeal } from '@storage/meals/createNewMeal'
-import uuid from 'react-uuid'
+import { Loading } from '@components/Loading'
+
+import { getMealById } from '@storage/meals/getMealById'
+import { updateMealById } from '@storage/meals/updateMealById'
+
+import { formatDate } from '@utils/formatDate'
 import { stringToDate } from '@utils/stringToDate'
+import { AppError } from '@utils/AppError'
+
+type RouteParamsProps = {
+  id: string
+}
 
 type StatusProps = 'failure' | 'success'
 
-export function NewMeal() {
+export function EditMeal() {
   const navigation = useNavigation()
+  const [isLoading, setIsLoading] = useState(true)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [date, setDate] = useState('')
   const [hour, setHour] = useState('')
   const [status, setStatus] = useState('' as StatusProps)
+  const { params } = useRoute()
+  const { id } = params as RouteParamsProps
   const descriptionRef = useRef<TextInput>(null)
   const dateRef = useRef<TextInput>(null)
   const hourRef = useRef<TextInput>(null)
 
-  async function handleAddNewMeal() {
+  const getMealInfo = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      const mealInfo = await getMealById(id)
+      setTitle(mealInfo.title)
+      setDescription(mealInfo.description)
+      const date = formatDate(mealInfo.date)
+      setDate(date)
+      setHour(mealInfo.hour)
+      setStatus(mealInfo.status)
+    } catch (error) {
+      console.log(error)
+      Alert.alert(
+        'Editar refeição',
+        'Não foi possível buscar os dados da refeição',
+      )
+      navigation.goBack()
+    } finally {
+      setIsLoading(false)
+    }
+  }, [id, navigation])
+
+  useEffect(() => {
+    getMealInfo()
+  }, [getMealInfo])
+
+  function handleGoBack() {
+    navigation.goBack()
+  }
+
+  if (isLoading) {
+    return (
+      <S.Container>
+        <Loading />
+      </S.Container>
+    )
+  }
+
+  async function updateMeal() {
     try {
       if (!title.trim()) {
         throw new AppError('Informe um título válido.')
@@ -49,42 +98,46 @@ export function NewMeal() {
         throw new AppError('Informe uma hora válida.')
       }
 
-      const id = uuid()
-
       const newDate = stringToDate(date)
 
       const newMeal = {
-        id,
+        title,
         description,
+        date: newDate,
         hour,
         status,
-        title,
-        date: newDate,
       }
+      await updateMealById(id, newMeal)
 
-      await createNewMeal(newMeal)
-      navigation.navigate('Feedback', { status })
+      navigation.goBack()
     } catch (error) {
       if (error instanceof AppError) {
-        Alert.alert('Adicionar refeição', error.message)
+        Alert.alert('Editar refeição', error.message)
       } else {
-        Alert.alert(
-          'Adicionar refeição',
-          'Não foi possível cadastrar refeição.',
-        )
+        Alert.alert('Editar refeição', 'Não foi possível editar a refeição.')
         console.log(error)
       }
     }
   }
 
+  function handleUpdateMeal() {
+    Alert.alert(
+      'Salvar alterações',
+      'Deseja salvar as alterações? Isso irá sobrescrever os dados.',
+      [
+        { text: 'Sim', onPress: () => updateMeal() },
+        { text: 'Não', style: 'cancel' },
+      ],
+    )
+  }
+
   return (
     <S.Container>
-      <Header title="Nova refeição" />
+      <Header title="Editar refeição" onPressBackButton={handleGoBack} />
 
       <S.Content>
         <S.Form>
           <Input
-            autoFocus
             returnKeyType="next"
             label="Nome"
             value={title}
@@ -143,7 +196,7 @@ export function NewMeal() {
             />
           </View>
         </S.Form>
-        <Button title="Cadastrar refeição" onPress={handleAddNewMeal} />
+        <Button title="Salvar alterações" onPress={handleUpdateMeal} />
       </S.Content>
     </S.Container>
   )

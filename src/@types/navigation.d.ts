@@ -4,8 +4,13 @@ export declare global {
     interface RootParamList {
       Home: undefined
       NewMeal: undefined
-      Meal: undefined
+      Meal: {
+        id: string
+      }
       MealsSummary: undefined
+      EditMeal: {
+        id: string
+      }
       Feedback: {
         status: 'success' | 'failure'
       }

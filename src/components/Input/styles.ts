@@ -1,3 +1,4 @@
+import MaskInput from 'react-native-mask-input'
 import styled, { css } from 'styled-components/native'
 
 type StyledInputProps = {
@@ -10,7 +11,7 @@ export const Container = styled.View`
   margin-bottom: 24px;
 `
 
-export const Input = styled.TextInput<StyledInputProps>`
+export const Input = styled(MaskInput)<StyledInputProps>`
   width: 100%;
   min-height: 48px;
   max-height: 48px;
